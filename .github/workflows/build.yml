@@ -23,10 +23,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Yarn Host Build
         run: |
-          cd "app/backstage"
           yarn install --frozen-lockfile
           yarn tsc
-          yarn build:backend --config app-config.production.yaml
+          yarn build:backend --config app-config.yaml
       - name: Build Container
         run: |
           docker image build . -f packages/backend/Dockerfile --tag backstage
