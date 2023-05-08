@@ -1,0 +1,32 @@
+name: 'Build'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+  workflow_dispatch:
+    
+permissions:
+  contents: read
+      
+jobs:
+  build:
+    name: 'Build Backstage'
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Yarn Host Build
+        run: |
+          cd "app/backstage"
+          yarn install --frozen-lockfile
+          yarn tsc
+          yarn build:backend --config app-config.production.yaml
+      - name: Build Container
+        run: |
+          docker image build . -f packages/backend/Dockerfile --tag backstage
