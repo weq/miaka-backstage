@@ -32,4 +32,8 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           cd "app/backstage"
-          docker image build . -f packages/backend/Dockerfile --tag backstage
+          docker image build . -f packages/backend/Dockerfile --tag weqew/backstage-poc
+      - name: Push Container to docker.io
+        run: |
+          docker login -u weqew -p ${{secrets.DOCKER_PAT}} docker.io
+          docker push weqew/backstage-poc
