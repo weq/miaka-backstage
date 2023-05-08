@@ -28,6 +28,8 @@ jobs:
           yarn tsc
           yarn build:backend --config ../../app-config.yaml
       - name: Build Container
+        env: 
+          DOCKER_BUILDKIT: 1
         run: |
           cd "app/backstage"
           docker image build . -f packages/backend/Dockerfile --tag backstage
