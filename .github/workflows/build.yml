@@ -29,4 +29,5 @@ jobs:
           yarn build:backend --config ../../app-config.yaml
       - name: Build Container
         run: |
+          cd "app/backstage"
           docker image build . -f packages/backend/Dockerfile --tag backstage
