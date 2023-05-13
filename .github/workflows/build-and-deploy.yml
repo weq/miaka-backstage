@@ -49,4 +49,4 @@ jobs:
           username: "weqew"
           password: ${{ secrets.DOCKER_PAT }}
       - name: Push Docker Image
-        run: docker push my-image:latest
+        run: docker push weqew/backstage-poc:latest
