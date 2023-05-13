@@ -76,9 +76,13 @@ resource "azuread_application" "backstage_login" {
   }
 }
 
-resource "azuread_service_principal" "backstage_login" {
-  
-}
+# resource "azuread_service_principal" "backstage_login" {
+#   
+# }
+# 
+# resource "random_password" "psql_password" {
+#   
+# }
 
 # Create/manage resource group for the connectfleet_frontend app.
 resource "azurerm_resource_group" "backstage" {
@@ -116,13 +120,22 @@ resource "azurerm_key_vault_access_policy" "backstage" {
     "List"
   ]
 }
-# 
-# resource "azurerm_key_vault_secret" "container_registry_username" {
-#   key_vault_id = azurerm_key_vault.backstage.id
-#   name         = "container-registry-username"
-#   value        = var.container_registry_username
-#   depends_on   = [azurerm_key_vault_access_policy.pipeline]
-# }
+
+
+resource "azurerm_key_vault_secret" "psql_username" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name         = "psql-username"
+  value        = var.psql_username
+  depends_on   = [azurerm_key_vault_access_policy.pipeline]
+}
+
+resource "azurerm_key_vault_secret" "psql_password" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name         = "psql-password"
+  value        = random_password.psql_password.result
+  depends_on   = [azurerm_key_vault_access_policy.pipeline]
+}
+
 # 
 # 
 # resource "azurerm_key_vault_secret" "container_registry_password" {
@@ -161,8 +174,8 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   location = azurerm_resource_group.backstage.location
   version = "14"
   sku_name = "B_Standard_B1ms"
-  administrator_login = "psqladmin"
-  administrator_password = "MiakaBackStage123!"
+  administrator_login = azurerm_key_vault_secret.psql_username.value
+  administrator_password = azurerm_key_vault_secret.psql_password.value
   identity {
     type = "SystemAssigned"
   }

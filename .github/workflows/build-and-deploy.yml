@@ -1,0 +1,52 @@
+name: 'Build and Deploy'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+  workflow_dispatch:
+    
+permissions:
+  contents: read
+      
+jobs:
+  build:
+    name: 'Build Backstage'
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Yarn Host Build
+        run: |
+          cd "app/backstage"
+          yarn install --frozen-lockfile
+          yarn tsc
+          yarn build:backend --config ../../app-config.yaml
+     # - name: Build Container
+     #   env: 
+     #     DOCKER_BUILDKIT: 1
+     #   run: |
+     #     cd "app/backstage"
+     #     docker image build . -f packages/backend/Dockerfile --tag weqew/backstage-poc
+     # - name: Push Container to docker.io
+     #   run: |
+     #     docker login -u weqew -p ${{secrets.DOCKER_PAT}} docker.io
+     #     docker push weqew/backstage-poc
+      - name: Build Docker Image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          cd "app/backstage"
+          docker build . -f packages/backend/Dockerfile -t weqew/backstage-poc:latest
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: "weqew"
+          password: ${{ secrets.DOCKER_PAT }}
+      - name: Push Docker Image
+        run: docker push my-image:latest

@@ -70,6 +70,12 @@ variable "backstage_port" {
 }
 
 variable "domain" {
-  dedescription = "The URL that should be used with Backstage"  
+  description = "The URL that should be used with Backstage"  
   type = string
+}
+
+variable "psql_username" {
+  description = "PostgreSQL Username"
+  type = string
+  default = "psqladmin"
 }
