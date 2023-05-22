@@ -78,3 +78,7 @@ jobs:
           terraform plan -out backstage.tfplan -input=false \
             -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}"
         working-directory: ./terraform
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve -input=false backstage.tfplan
+        working-directory: ./terraform
