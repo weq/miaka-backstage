@@ -52,14 +52,14 @@ provider "random" {}
 data "azurerm_client_config" "current" {
 }
 
-data "azuread_application" "pipeline" {
-  #application_id = var.pipeline_user_application_id
-  application_id = var.client_id
-}
-
-data "azuread_service_principal" "pipeline" {
-  application_id = data.azuread_application.pipeline.application_id
-}
+# data "azuread_application" "pipeline" {
+#   #application_id = var.pipeline_user_application_id
+#   application_id = var.client_id
+# }
+# 
+# data "azuread_service_principal" "pipeline" {
+#   application_id = data.azuread_application.pipeline.application_id
+# }
 
 
 ##################################################################################################
