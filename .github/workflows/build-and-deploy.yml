@@ -73,5 +73,6 @@ jobs:
         working-directory: ./terraform
       - name: Terraform Plan
         run: |
-          terraform plan -out backstage.tfplan -input=false
+          terraform plan -out backstage.tfplan -input=false \
+            -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}"
         working-directory: ./terraform
