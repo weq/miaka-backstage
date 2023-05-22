@@ -3,8 +3,12 @@ name: 'Build and Deploy'
 on:
   push:
     branches:
-    - main
+      - main
+    paths:
+      - 'app/**'
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
     
 permissions:
