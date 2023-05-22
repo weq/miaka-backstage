@@ -78,4 +78,4 @@ variable "psql_username" {
   description = "PostgreSQL Username"
   type = string
   default = "psqladmin"
-}
+} 
