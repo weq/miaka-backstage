@@ -80,9 +80,11 @@ resource "azuread_application" "backstage_login" {
 #   
 # }
 # 
-# resource "random_password" "psql_password" {
-#   
-# }
+resource "random_password" "psql_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
 
 # Create/manage resource group for the connectfleet_frontend app.
 resource "azurerm_resource_group" "backstage" {
