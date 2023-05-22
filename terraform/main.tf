@@ -18,13 +18,13 @@ terraform {
       version = ">= 1.0.0"
     }
   }
-  #backend "azurerm" {
-  #  resource_group_name  = "terraform-state"
-  #  storage_account_name = "miakatfstate"
-  #  container_name       = "state"
-  #  key = "poc.backstage.tfstate"
-  #  # subscription_id      = ""
-  #}
+  backend "azurerm" {
+    resource_group_name  = "terraform-state"
+    storage_account_name = "miakatfstate"
+    container_name       = "state"
+    # key = "poc.backstage.tfstate"
+    # subscription_id      = ""
+  }
 }
 
 
