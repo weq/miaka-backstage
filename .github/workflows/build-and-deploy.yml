@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'terraform/**'
   pull_request:
     branches:
       - main
@@ -17,7 +15,6 @@ permissions:
 jobs:
   build:
     name: 'Build Backstage'
-    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     # environment: production
     defaults:
