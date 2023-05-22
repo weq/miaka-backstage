@@ -53,6 +53,7 @@ jobs:
       - name: Push Docker Image
         run: docker push weqew/backstage-poc:latest
   deploy:
+    name: 'Deploy to Azure with Terraform' 
     runs-on: ubuntu-latest
     needs: build
     environment: 'production'
