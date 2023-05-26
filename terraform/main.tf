@@ -164,6 +164,14 @@ resource "azurerm_container_group" "backstage" {
       port     = var.backstage_port
       protocol = "TCP"
     }
+    environment_variables = {
+      POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
+      POSTGRES_PORT = 5432
+      POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
+    }
+    secure_environment_variables = {
+      POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
+    }
   }
   identity {
     type = "SystemAssigned"
