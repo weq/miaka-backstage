@@ -190,7 +190,7 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   identity {
     type = "SystemAssigned"
   }
-  storage_mb = 65536
+  storage_mb = 32768
 }
 
 # resource "azurerm_container_app_environment" "backstage" {
