@@ -83,7 +83,7 @@ resource "azuread_service_principal" "backstage_login_sp" {
 
 resource "azuread_service_principal_password" "backstage_login_sp_password" {
   service_principal_id = azuread_service_principal.backstage_login_sp.object_id
-  endend_date_relative = "87600h"
+  end_date_relative = "87600h"
 }
  
 resource "random_password" "psql_password" {
