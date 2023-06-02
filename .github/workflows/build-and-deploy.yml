@@ -23,13 +23,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Download SSL Cert
-        run: |
-          mkdir "app/backstage/ca"
-          cd "app/backstage/ca"
-          wget "https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem"
-          mv DigiCertGlobalRootCA.crt.pem server.crt
-          ls server.crt
+      # - name: Download SSL Cert
+      #   run: |
+      #     mkdir -p "app/backstage/ca"
+      #     cd "app/backstage/ca"
+      #     wget "https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem"
+      #     mv DigiCertGlobalRootCA.crt.pem server.crt
+      #     ls server.crt
       - name: Yarn Host Build
         run: |
           cd "app/backstage"
