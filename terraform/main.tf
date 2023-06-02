@@ -68,7 +68,7 @@ data "azuread_service_principal" "pipeline" {
 ##################################################################################################
 
 resource "azuread_application" "backstage_login" {
-  display_name = "Backstage Login"
+  display_name = "Backstage Login - ${var.environment}"
   web {
     redirect_uris = [
       "http://localhost:7007/api/auth/microsoft/handler/frame",
@@ -77,10 +77,15 @@ resource "azuread_application" "backstage_login" {
   }
 }
 
-# resource "azuread_service_principal" "backstage_login" {
-#   
-# }
-# 
+resource "azuread_service_principal" "backstage_login_sp" {
+  application_id = azuread_application.backstage_login.application_id
+}
+
+resource "azuread_service_principal_password" "backstage_login_sp_password" {
+  service_principal_id = azuread_service_principal.backstage_login_sp.object_id
+  endend_date_relative = "87600h"
+}
+ 
 resource "random_password" "psql_password" {
   length           = 16
   special          = true
@@ -149,7 +154,7 @@ resource "azurerm_key_vault_secret" "psql_password" {
 # }
 
 resource "azurerm_container_group" "backstage" {
-  name                = "ci-backstage"
+  name                = "ci-backstage-${var.environment}"
   resource_group_name = azurerm_resource_group.backstage.name
   location            = azurerm_resource_group.backstage.location
   ip_address_type     = "None"
@@ -190,7 +195,7 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   identity {
     type = "SystemAssigned"
   }
-  storage_mb = 65536
+  storage_mb = 32768
 }
 
 # resource "azurerm_container_app_environment" "backstage" {
