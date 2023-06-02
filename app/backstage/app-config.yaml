@@ -38,8 +38,9 @@ backend:
       # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
       # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
       ssl:
+        #verify-full: true
         ca: # if you have a CA file and want to verify it you can uncomment this section
-          $file: ./ca/server.crt
+          $file: ./ca/test.crt
   cache:
     store: memory
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir

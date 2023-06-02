@@ -175,7 +175,8 @@ resource "azurerm_container_group" "backstage" {
       POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
       AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
       AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-      SSLMODE = "require"
+      # NODE_TLS_REJECT_UNAUTHORIZED=0 # Need this to connect flexible server, remember to have server.crt installed. PEM must be converted.
+      # SSLMODE = "require"
     }
     secure_environment_variables = {
       POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value

@@ -28,8 +28,7 @@ jobs:
           mkdir "app/backstage/ca"
           cd "app/backstage/ca"
           wget "https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem"
-          openssl x509 -outform der -in DigiCertGlobalRootCA.crt.pem -out server.crt
-          rm DigiCertGlobalRootCA.crt.pem
+          mv DigiCertGlobalRootCA.crt.pem server.crt
           ls server.crt
       - name: Yarn Host Build
         run: |
