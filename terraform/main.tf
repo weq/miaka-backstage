@@ -192,6 +192,7 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   sku_name = "B_Standard_B1ms"
   administrator_login = azurerm_key_vault_secret.psql_username.value
   administrator_password = azurerm_key_vault_secret.psql_password.value
+  zone = 1
   identity {
     type = "SystemAssigned"
   }
