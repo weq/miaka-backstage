@@ -172,11 +172,11 @@ resource "azurerm_container_group" "backstage" {
     environment_variables = {
       POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
       POSTGRES_PORT = 5432
-      POSTGRES_USER = azurerm_key_vault_secret.psql_username.values
+      POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
       AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
       AUTH_MICROSOFT_CLIENT_SECRET = azuread_service_principal_password.backstage_login_sp_password.value
       AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-      PGSSLMODE = "require"
+      SSLMODE = "require"
     }
     secure_environment_variables = {
       POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
