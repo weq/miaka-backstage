@@ -40,7 +40,7 @@ backend:
       ssl:
         #verify-full: true
         ca: # if you have a CA file and want to verify it you can uncomment this section
-          $file: $file/ca/server.crt
+          $file: ./ca/server.crt
   cache:
     store: memory
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
