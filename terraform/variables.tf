@@ -51,6 +51,12 @@ variable "backstage_image" {
   type = string
 }
 
+variable "backstage_image_tag" {
+  description = "The tag we want to use for our backstage image."
+  type = string
+  default = "latest"
+}
+
 variable "backstage_cpu_cores" {
   description = "The CPU size for the backstage container."
   type = string
