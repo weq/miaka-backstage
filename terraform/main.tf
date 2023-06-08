@@ -1,72 +1,3 @@
-##################################################################################################
-### Terraform Init
-##################################################################################################
-
-
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.52"
-    }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = ">= 2.15.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 1.0.0"
-    }
-  }
-  backend "azurerm" {
-    resource_group_name  = "terraform-state"
-    storage_account_name = "miakatfstate"
-    container_name       = "state"
-    key = "poc.backstage.tfstate"
-    # subscription_id      = ""
-  }
-}
-
-
-##################################################################################################
-### Terraform Providers
-##################################################################################################
-
-provider "azuread" {
-  tenant_id = var.tenant_id
-}
-
-provider "azurerm" {
-  subscription_id = var.subscription_id
-  features {}
-}
-
-provider "random" {}
-
-##################################################################################################
-### Data
-##################################################################################################
-
-# Import credentials for the current user. When run by azure pipelines,
-# this will be the values specified in the ARM_* variables.
-# Currently only the tenant_id is used in the app config.
-data "azurerm_client_config" "current" {
-}
-
-data "azuread_application" "pipeline" {
-  #application_id = var.pipeline_user_application_id
-  application_id = var.client_id
-}
-
-data "azuread_service_principal" "pipeline" {
-  application_id = data.azuread_application.pipeline.application_id
-}
-
-
-##################################################################################################
-### Resources
-##################################################################################################
-
 resource "azuread_application" "backstage_login" {
   display_name = "Backstage Login - ${var.environment}"
   web {
@@ -92,7 +23,6 @@ resource "random_password" "psql_password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# Create/manage resource group for the connectfleet_frontend app.
 resource "azurerm_resource_group" "backstage" {
   name     = "rg-backstage-${var.environment}"
   location = var.location
@@ -122,7 +52,7 @@ resource "azurerm_key_vault_access_policy" "pipeline" {
 resource "azurerm_key_vault_access_policy" "backstage" {
   key_vault_id = azurerm_key_vault.backstage.id
   tenant_id    = var.tenant_id
-  object_id    = azurerm_container_group.backstage.identity[0].principal_id
+  object_id    = azurerm_linux_web_app.backstage.identity[0].principal_id
   secret_permissions = [
     "Get",
     "List"
@@ -144,6 +74,20 @@ resource "azurerm_key_vault_secret" "psql_password" {
   depends_on   = [azurerm_key_vault_access_policy.pipeline]
 }
 
+resource "azurerm_key_vault_secret" "client_id" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name = "client-secret"
+  value = azuread_service_principal_password.backstage_login_sp_password.value
+  depends_on = [azurerm_key_vault_access_policy.pipeline]
+}
+
+resource "azurerm_key_vault_secret" "client_secret" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name = "client-secret"
+  value = azuread_service_principal_password.backstage_login_sp_password.value
+  depends_on = [azurerm_key_vault_access_policy.pipeline]
+}
+
 # 
 # 
 # resource "azurerm_key_vault_secret" "container_registry_password" {
@@ -153,35 +97,73 @@ resource "azurerm_key_vault_secret" "psql_password" {
 #   depends_on   = [azurerm_key_vault_access_policy.pipeline]
 # }
 
-resource "azurerm_container_group" "backstage" {
-  name                = "ci-backstage-${var.environment}"
+# resource "azurerm_container_group" "backstage" {
+#   name                = "ci-backstage-${var.environment}"
+#   resource_group_name = azurerm_resource_group.backstage.name
+#   location            = azurerm_resource_group.backstage.location
+#   ip_address_type     = "None"
+#   os_type             = "Linux"
+#   #restart_policy      = var.restart_policy
+#   container {
+#     name   = "backstage"
+#     image  = var.backstage_image
+#     cpu    = var.backstage_cpu_cores
+#     memory = var.backstage_memory_in_gb
+#     ports {
+#       port     = var.backstage_port
+#       protocol = "TCP"
+#     }
+#     environment_variables = {
+#       POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
+#       POSTGRES_PORT = 5432
+#       POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
+#       AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
+#       AUTH_MICROSOFT_TENANT_ID = var.tenant_id
+#       # NODE_TLS_REJECT_UNAUTHORIZED=0 # Need this to connect flexible server, remember to have server.crt installed. PEM must be converted.
+#       PGSSLMODE = "verify-full"
+#     }
+#     secure_environment_variables = {
+#       POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
+#       AUTH_MICROSOFT_CLIENT_SECRET = azuread_service_principal_password.backstage_login_sp_password.value
+#     }
+#   }
+#   identity {
+#     type = "SystemAssigned"
+#   }
+#   tags = var.tags
+# }
+
+resource "azurerm_service_plan" "backstage" {
+  name                = "asp-backstage-${var.environment}"
   resource_group_name = azurerm_resource_group.backstage.name
   location            = azurerm_resource_group.backstage.location
-  ip_address_type     = "None"
   os_type             = "Linux"
+  sku_name            = var.app_service_plan_sku
+}
+
+resource "azurerm_linux_web_app" "backstage" {
+  name                = "app-backstage-${var.environment}"
+  resource_group_name = azurerm_resource_group.backstage.name
+  location            = azurerm_resource_group.backstage.location
+  service_plan_id = azurerm_service_plan.backstage.id
+  https_only = true
   #restart_policy      = var.restart_policy
-  container {
-    name   = "backstage"
-    image  = var.backstage_image
-    cpu    = var.backstage_cpu_cores
-    memory = var.backstage_memory_in_gb
-    ports {
-      port     = var.backstage_port
-      protocol = "TCP"
+  site_config {
+    application_stack {
+      docker_image = var.backstage_image
+      docker_image_tag = var.backstage_image_tag
     }
-    environment_variables = {
-      POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
-      POSTGRES_PORT = 5432
-      POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
-      AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
-      AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-      # NODE_TLS_REJECT_UNAUTHORIZED=0 # Need this to connect flexible server, remember to have server.crt installed. PEM must be converted.
-      PGSSLMODE = "verify-full"
-    }
-    secure_environment_variables = {
-      POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
-      AUTH_MICROSOFT_CLIENT_SECRET = azuread_service_principal_password.backstage_login_sp_password.value
-    }
+  }
+  app_settings = {
+    POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
+    POSTGRES_PORT = 5432
+    POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
+    POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
+    POSTGRES_PASSWORD = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.psql_password.name})"
+    AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
+    AUTH_MICROSOFT_TENANT_ID = var.tenant_id
+    AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
+    PGSSLMODE = "verify-full"
   }
   identity {
     type = "SystemAssigned"

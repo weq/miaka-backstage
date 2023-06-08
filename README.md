@@ -23,9 +23,3 @@ TF må deploye:
     AppService
     DNS records
     KeyVault
-
-export POSTGRES_HOST=psql-backstage.postgres.database.azure.com
-export POSTGRES_PASSWORD="otmXZ(o3RRe+0:nk"
-export POSTGRES_USER=psqladmin
-export POSTGRES_PORT=5432
-export NODE_TLS_REJECT_UNAUTHORIZED=0

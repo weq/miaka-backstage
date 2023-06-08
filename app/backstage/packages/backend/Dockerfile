@@ -29,7 +29,7 @@ WORKDIR /app
 
 # This switches many Node.js dependencies to production mode.
 ENV NODE_ENV production
-ENV NODE_TLS_REJECT_UNAUTHORIZED 0
+# ENV NODE_TLS_REJECT_UNAUTHORIZED 0
 
 # Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
 # The skeleton contains the package.json of each package in the monorepo,

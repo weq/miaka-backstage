@@ -78,4 +78,10 @@ variable "psql_username" {
   description = "PostgreSQL Username"
   type = string
   default = "psqladmin"
-} 
+}
+
+variable "app_service_plan_sku" {
+  description = "App Service SKU to be used for Linux App"
+  type = string
+  default = "free"
+}
