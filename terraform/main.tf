@@ -2,8 +2,7 @@ resource "azuread_application" "backstage_login" {
   display_name = "Backstage Login - ${var.environment}"
   web {
     redirect_uris = [
-      "http://localhost:7007/api/auth/microsoft/handler/frame",
-      "http://${var.domain}:7007/api/auth/microsoft/handler/frame"
+      "http://${var.domain}/api/auth/microsoft/handler/frame"
     ]
   }
 }
@@ -188,6 +187,45 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
     type = "SystemAssigned"
   }
   storage_mb = 32768
+}
+
+resource "azurerm_dns_cname_record" "backstage" {
+  name                = var.backstage_sub_domain
+  zone_name           = data.azurerm_dns_zone.tld.name
+  resource_group_name = data.azurerm_dns_zone.tld.resource_group_name
+  ttl                 = var.dns_rec_ttl
+  record              = azurerm_linux_web_app.backstage.default_hostname
+
+}
+
+resource "azurerm_dns_txt_record" "connectfleet_frontend" {
+  name                = "asuid.${var.backstage_sub_domain}"
+  zone_name           = data.azurerm_dns_zone.tld.name
+  resource_group_name = data.azurerm_dns_zone.tld.resource_group_name
+  ttl                 = var.dns_rec_ttl
+  record {
+    value = azurerm_linux_web_app.backstage.custom_domain_verification_id
+  }
+}
+
+resource "azurerm_app_service_custom_hostname_binding" "backstage" {
+  hostname            = trim(azurerm_dns_cname_record.backstage.fqdn, ".")
+  app_service_name    = azurerm_linux_web_app.backstage.name
+  resource_group_name = azurerm_resource_group.backstage.name
+  depends_on          = [azurerm_dns_txt_record.backstage]
+  lifecycle {
+    ignore_changes = [ssl_state, thumbprint]
+  }
+}
+
+resource "azurerm_app_service_managed_certificate" "backstage" {
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.backstage.id
+}
+
+resource "azurerm_app_service_certificate_binding" "backstage" {
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.backstage.id
+  certificate_id      = azurerm_app_service_managed_certificate.backstage.id
+  ssl_state           = "SniEnabled"
 }
 
 # resource "azurerm_container_app_environment" "backstage" {

@@ -75,11 +75,6 @@ variable "backstage_port" {
   default = 80  
 }
 
-variable "domain" {
-  description = "The URL that should be used with Backstage"  
-  type = string
-}
-
 variable "psql_username" {
   description = "PostgreSQL Username"
   type = string
@@ -90,4 +85,22 @@ variable "app_service_plan_sku" {
   description = "App Service SKU to be used for Linux App"
   type = string
   default = "free"
+}
+
+variable "domain" {
+  description = "Domain with TLD."
+  type = string
+  default = "miaka.info"
+}
+
+variable "dns_prefix" {
+  description = "If there is a domain prefix like dev or staging this should be used."
+  type = string
+  default = ""
+}
+
+variable "backstage_sub_domain" {
+  description = "The subdomain you want for the Backstage instance."
+  type = string
+  default = "backstage"
 }
