@@ -16,3 +16,12 @@ data "azuread_application" "pipeline" {
 data "azuread_service_principal" "pipeline" {
   application_id = data.azuread_application.pipeline.application_id
 }
+
+data "azurerm_resource_group" "dns" {
+  name = "rg-${var.domain}"
+}
+
+data "azurerm_dns_zone" "tld" {
+  name                = "${var.dns_prefix}${var.domain}"
+  resource_group_name = data.azurerm_resource_group.dns.name
+}
