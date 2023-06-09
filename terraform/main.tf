@@ -16,6 +16,10 @@ resource "azuread_service_principal_password" "backstage_login_sp_password" {
   service_principal_id = azuread_service_principal.backstage_login_sp.object_id
   end_date_relative = "87600h"
 }
+
+resource "random_pet" "backstage" {
+  
+}
  
 resource "random_password" "psql_password" {
   length           = 16
@@ -142,7 +146,7 @@ resource "azurerm_service_plan" "backstage" {
 }
 
 resource "azurerm_linux_web_app" "backstage" {
-  name                = "app-backstage-${var.environment}"
+  name                = "app-backstage-${var.environment}-${}"
   resource_group_name = azurerm_resource_group.backstage.name
   location            = azurerm_resource_group.backstage.location
   service_plan_id = azurerm_service_plan.backstage.id
