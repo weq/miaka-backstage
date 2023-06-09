@@ -198,7 +198,7 @@ resource "azurerm_dns_cname_record" "backstage" {
 
 }
 
-resource "azurerm_dns_txt_record" "connectfleet_frontend" {
+resource "azurerm_dns_txt_record" "backstage" {
   name                = "asuid.${var.backstage_sub_domain}"
   zone_name           = data.azurerm_dns_zone.tld.name
   resource_group_name = data.azurerm_dns_zone.tld.resource_group_name
