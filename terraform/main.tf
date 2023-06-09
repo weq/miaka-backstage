@@ -146,7 +146,7 @@ resource "azurerm_service_plan" "backstage" {
 }
 
 resource "azurerm_linux_web_app" "backstage" {
-  name                = "app-backstage-${var.environment}-${random_pet.backstage.result}"
+  name                = "app-backstage-${var.environment}-${random_pet.backstage.id}"
   resource_group_name = azurerm_resource_group.backstage.name
   location            = azurerm_resource_group.backstage.location
   service_plan_id = azurerm_service_plan.backstage.id
