@@ -183,9 +183,9 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   administrator_login = azurerm_key_vault_secret.psql_username.value
   administrator_password = azurerm_key_vault_secret.psql_password.value
   zone = 1
-  identity {
-    type = "SystemAssigned"
-  }
+  #identity {
+  #  type = "SystemAssigned"
+  #}
   storage_mb = 32768
 }
 
