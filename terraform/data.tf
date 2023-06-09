@@ -17,8 +17,11 @@ data "azuread_service_principal" "pipeline" {
   application_id = data.azuread_application.pipeline.application_id
 }
 
+locals {
+
+}
 data "azurerm_resource_group" "dns" {
-  name = "rg-${var.domain}"
+  name = "rg-${replace(var.domain, "\\.", "_")}"
 }
 
 data "azurerm_dns_zone" "tld" {
