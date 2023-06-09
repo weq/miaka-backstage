@@ -104,3 +104,9 @@ variable "backstage_sub_domain" {
   type = string
   default = "backstage"
 }
+
+variable "dns_rec_ttl" {
+  description = "TTL for DNS records"
+  type = number
+  default = 300
+}
