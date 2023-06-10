@@ -21,7 +21,8 @@ locals {
 
 }
 data "azurerm_resource_group" "dns" {
-  name = "rg-${replace(var.domain, ".", "_")}-${var.environment}"
+  # name = "rg-${replace(var.domain, ".", "_")}-${var.environment}"
+  name = "rg-${replace(var.domain, ".", "_")}-prod"
 }
 
 data "azurerm_dns_zone" "tld" {
