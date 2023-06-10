@@ -17,11 +17,9 @@ data "azuread_service_principal" "pipeline" {
   application_id = data.azuread_application.pipeline.application_id
 }
 
-locals {
-
-}
 data "azurerm_resource_group" "dns" {
-  name = "rg-${replace(var.backstage_sub_domain, "\\.", "_")}-prod"
+  # name = "rg-${replace(var.domain, ".", "_")}-${var.environment}"
+  name = "rg-miaka_info-prod"
 }
 
 data "azurerm_dns_zone" "tld" {
