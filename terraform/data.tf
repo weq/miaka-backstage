@@ -19,7 +19,7 @@ data "azuread_service_principal" "pipeline" {
 
 data "azurerm_resource_group" "dns" {
   # name = "rg-${replace(var.domain, ".", "_")}-${var.environment}"
-  name = "rg-miaka_info-prod"
+  name = "rg-miaka_dns-prod"
 }
 
 data "azurerm_dns_zone" "tld" {
