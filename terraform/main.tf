@@ -167,7 +167,7 @@ resource "azurerm_linux_web_app" "backstage" {
     AUTH_MICROSOFT_TENANT_ID = var.tenant_id
     AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
     PGSSLMODE = "verify-full"
-    WEBSITES_PORT = 3000
+    WEBSITES_PORT = 7007
   }
   identity {
     type = "SystemAssigned"
