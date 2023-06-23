@@ -8,7 +8,7 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://backstage.miaka.info:7007
+  baseUrl: http://localhost:7007
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
@@ -40,16 +40,24 @@ auth:
   environment: production
   providers:
     microsoft:
-w      production:
+      production:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
 
-# techdocs:
-#   builder: 'external'
-#   publisher:
-#     type: 'azureBlobStorage'
-#     azureBlobStorage:
-#       containerName: ${TECHDOCS_CONTAINER_NAME}
-#       credentials:
-#         accountName: ${TECHDOCS_STORAGE_ACCOUNT}
+auth:
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+
+#techdocs:
+#  builder: 'external'
+#  publisher:
+#    type: 'azureBlobStorage'
+#    azureBlobStorage:
+#      containerName: ${TECHDOCS_CONTAINER_NAME}
+#      credentials:
+#        accountName: ${TECHDOCS_STORAGE_ACCOUNT}
