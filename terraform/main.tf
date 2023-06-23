@@ -67,74 +67,37 @@ resource "azurerm_key_vault_secret" "psql_username" {
   key_vault_id = azurerm_key_vault.backstage.id
   name         = "psql-username"
   value        = var.psql_username
-  depends_on   = [azurerm_key_vault_access_policy.pipeline]
+  depends_on   = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
 resource "azurerm_key_vault_secret" "psql_password" {
   key_vault_id = azurerm_key_vault.backstage.id
   name         = "psql-password"
   value        = random_password.psql_password.result
-  depends_on   = [azurerm_key_vault_access_policy.pipeline]
+  depends_on   = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
 resource "azurerm_key_vault_secret" "client_id" {
   key_vault_id = azurerm_key_vault.backstage.id
   name = "client-secret"
   value = azuread_service_principal_password.backstage_login_sp_password.value
-  depends_on = [azurerm_key_vault_access_policy.pipeline]
+  depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
 resource "azurerm_key_vault_secret" "client_secret" {
   key_vault_id = azurerm_key_vault.backstage.id
   name = "client-secret"
   value = azuread_service_principal_password.backstage_login_sp_password.value
-  depends_on = [azurerm_key_vault_access_policy.pipeline]
+  depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
-# 
-# 
-# resource "azurerm_key_vault_secret" "container_registry_password" {
-#   key_vault_id = azurerm_key_vault.backstage.id
-#   name         = "container-registry-password"
-#   value        = var.container_registry_password
-#   depends_on   = [azurerm_key_vault_access_policy.pipeline]
-# }
-
-# resource "azurerm_container_group" "backstage" {
-#   name                = "ci-backstage-${var.environment}"
-#   resource_group_name = azurerm_resource_group.backstage.name
-#   location            = azurerm_resource_group.backstage.location
-#   ip_address_type     = "None"
-#   os_type             = "Linux"
-#   #restart_policy      = var.restart_policy
-#   container {
-#     name   = "backstage"
-#     image  = var.backstage_image
-#     cpu    = var.backstage_cpu_cores
-#     memory = var.backstage_memory_in_gb
-#     ports {
-#       port     = var.backstage_port
-#       protocol = "TCP"
-#     }
-#     environment_variables = {
-#       POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
-#       POSTGRES_PORT = 5432
-#       POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
-#       AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
-#       AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-#       # NODE_TLS_REJECT_UNAUTHORIZED=0 # Need this to connect flexible server, remember to have server.crt installed. PEM must be converted.
-#       PGSSLMODE = "verify-full"
-#     }
-#     secure_environment_variables = {
-#       POSTGRES_PASSWORD = azurerm_key_vault_secret.psql_password.value
-#       AUTH_MICROSOFT_CLIENT_SECRET = azuread_service_principal_password.backstage_login_sp_password.value
-#     }
-#   }
-#   identity {
-#     type = "SystemAssigned"
-#   }
-#   tags = var.tags
-# }
+resource "azurerm_key_vault_secret" "github_token" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name = "github-token"
+  value = var.github_token
+  depends_on = [ azurerm_key_vault_access_policy.pipeline ]
+  
+}
 
 resource "azurerm_service_plan" "backstage" {
   name                = "asp-backstage-${var.environment}"
@@ -168,6 +131,7 @@ resource "azurerm_linux_web_app" "backstage" {
     AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
     PGSSLMODE = "verify-full"
     WEBSITES_PORT = 7007
+    GITHUB_TOKEN = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.github_token.name})"
   }
   identity {
     type = "SystemAssigned"

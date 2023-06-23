@@ -73,15 +73,15 @@ techdocs:
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
-auth:
-# see https://backstage.io/docs/auth/ to learn about auth providers
-  environment: development
-  providers:
-    microsoft:
-      development:
-        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
-        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
-        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+# auth:
+# # see https://backstage.io/docs/auth/ to learn about auth providers
+#   environment: development
+#   providers:
+#     microsoft:
+#       development:
+#         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+#         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+#         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -118,3 +118,6 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+
+
+    # PAT 8fc7b205dd65fa8be7c505e76c5b25f9ea6259ee

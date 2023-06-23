@@ -110,3 +110,8 @@ variable "dns_rec_ttl" {
   type = number
   default = 300
 }
+
+variable "github_token" {
+  description = "PAT Token for GitHub connection."
+  type = string
+}
