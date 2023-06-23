@@ -115,3 +115,13 @@ variable "github_token" {
   description = "PAT Token for GitHub connection."
   type = string
 }
+
+variable "auth_github_client_id" {
+  description = "Authentication for Github, Client Id."
+  type = string
+}
+
+variable "auth_github_client_secret" {
+  description = "Authentication for Github, Client Secret."
+  type = string
+}
