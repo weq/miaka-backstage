@@ -99,14 +99,14 @@ resource "azurerm_key_vault_secret" "github_token" {
 }
 
 resource "azurerm_key_vault_secret" "auth_github_client_id" {
-  key_vault_id = azurerm_key_vault.backstage.identity
+  key_vault_id = azurerm_key_vault.backstage.id
   name = "auth-github-client-id"
   value = var.auth_github_client_id
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
 resource "azurerm_key_vault_secret" "auth_github_client_secret" {
-  key_vault_id = azurerm_key_vault.backstage.identity
+  key_vault_id = azurerm_key_vault.backstage.id
   name = "auth-github-client-secret"
   value = var.auth_github_client_secret
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
