@@ -84,7 +84,7 @@ jobs:
         run: |
           terraform plan -out backstage.tfplan -input=false \
             -var="client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
-            -var="GITHUB_TOKEN=${{ secrets.GH_TOKEN }}"
+            -var="github_token=${{ secrets.GH_TOKEN }}"
         working-directory: ./terraform
       - name: Terraform Apply
         run: |
