@@ -46,7 +46,7 @@ auth:
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
 
 auth:
-  environment: development
+  environment: production
   providers:
     github:
       development:
