@@ -98,7 +98,7 @@ resource "azurerm_key_vault_secret" "github_token" {
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
-resource "azurerm_key_vault_secret" "auth_github_client_id" {s
+resource "azurerm_key_vault_secret" "auth_github_client_id" {
   key_vault_id = azurerm_key_vault.backstage.id
   name = "auth-github-client-id"
   value = var.auth_github_client_id
