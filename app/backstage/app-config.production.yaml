@@ -1,6 +1,6 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  baseUrl: http://backstage.miaka.info:7007
+  baseUrl: http://backstage.miaka.info
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -8,10 +8,10 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://backstage.miaka.info:7007
+  baseUrl: http://backstage.miaka.info
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
-  listen: ':7007'
+  listen: ':80'
 
   # config options: https://node-postgres.com/api/client
   database:
@@ -37,17 +37,17 @@ catalog:
 
 # https://backstage.io/docs/auth/microsoft/provider
 auth:
-  environment: development
+  environment: production
   providers:
     microsoft:
-      development:
+      production:
         clientId: ${AUTH_MICROSOFT_CLIENT_ID}
         clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
         tenantId: ${AUTH_MICROSOFT_TENANT_ID}
-    github:
-      development:
-        clientId: ${AUTH_GITHUB_CLIENT_ID}
-        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+    #github:
+    #  development:
+    #    clientId: ${AUTH_GITHUB_CLIENT_ID}
+    #    clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
 #techdocs:
 #  builder: 'external'
