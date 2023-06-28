@@ -2,7 +2,7 @@ resource "azuread_application" "backstage_login" {
   display_name = "Backstage Login - ${var.environment}"
   web {
     redirect_uris = [
-      "http://${var.domain}/api/auth/microsoft/handler/frame"
+      "http://${var.backstage_sub_domain}.${var.domain}/api/auth/microsoft/handler/frame"
     ]
   }
 }
@@ -84,7 +84,7 @@ resource "azurerm_key_vault_secret" "psql_password" {
 
 resource "azurerm_key_vault_secret" "client_id" {
   key_vault_id = azurerm_key_vault.backstage.id
-  name = "client-secret"
+  name = "client-id"
   value = azuread_application.backstage_login.application_id
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
