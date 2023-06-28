@@ -7,16 +7,11 @@ resource "azuread_application" "backstage_login" {
   }
 }
 
-resource "azuread_service_principal" "backstage_login_sp" {
+resource "azuread_service_principal" "service_principal" {
   application_id = azuread_application.backstage_login.application_id
 }
 
-resource "azuread_service_principal_password" "backstage_login_sp_password" {
-  service_principal_id = azuread_service_principal.backstage_login_sp.object_id
-  end_date_relative = "87600h"
-}
-
-resource "azuread_application_password" "backstage_login_sp_password" {
+resource "azuread_application_password" "backstage_app_password" {
   application_object_id = azuread_application.backstage_login.object_id
   end_date_relative = "87600h"
 }
@@ -92,7 +87,7 @@ resource "azurerm_key_vault_secret" "client_id" {
 resource "azurerm_key_vault_secret" "client_secret" {
   key_vault_id = azurerm_key_vault.backstage.id
   name = "client-secret"
-  value = azuread_application_password.backstage_login_sp_password.value
+  value = azuread_application_password.backstage_app_password.value
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
@@ -146,7 +141,8 @@ resource "azurerm_linux_web_app" "backstage" {
     POSTGRES_PASSWORD = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.psql_password.name})"
     AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
     AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-    AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
+    #AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
+    AUTH_MICROSOFT_CLIENT_SECRET = azuread_application_password.backstage_app_password.value
     PGSSLMODE = "verify-full"
     WEBSITES_PORT = 7007
     GITHUB_TOKEN = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.github_token.name})"
