@@ -2,7 +2,7 @@ resource "azuread_application" "backstage_login" {
   display_name = "Backstage Login - ${var.environment}"
   web {
     redirect_uris = [
-      "http://${var.backstage_sub_domain}.${var.domain}/api/auth/microsoft/handler/frame"
+      "https://${var.backstage_sub_domain}.${var.domain}/api/auth/microsoft/handler/frame"
     ]
   }
 }
