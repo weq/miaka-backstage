@@ -141,8 +141,8 @@ resource "azurerm_linux_web_app" "backstage" {
     POSTGRES_PASSWORD = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.psql_password.name})"
     AUTH_MICROSOFT_CLIENT_ID = azuread_application.backstage_login.application_id
     AUTH_MICROSOFT_TENANT_ID = var.tenant_id
-    #AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
-    AUTH_MICROSOFT_CLIENT_SECRET = azuread_application_password.backstage_app_password.value
+    AUTH_MICROSOFT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.client_secret.name})"
+    #AUTH_MICROSOFT_CLIENT_SECRET = azuread_application_password.backstage_app_password.value
     PGSSLMODE = "verify-full"
     WEBSITES_PORT = 7007
     GITHUB_TOKEN = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.github_token.name})"
