@@ -16,6 +16,11 @@ resource "azuread_service_principal_password" "backstage_login_sp_password" {
   end_date_relative = "87600h"
 }
 
+#resource "azuread_application_password" "backstage_login_sp_password" {
+#  application_object_id = azuread_application.backstage_login.object_id
+#  end_date_relative = "87600h"
+#}
+
 resource "random_pet" "backstage" {
   
 }
@@ -80,7 +85,7 @@ resource "azurerm_key_vault_secret" "psql_password" {
 resource "azurerm_key_vault_secret" "client_id" {
   key_vault_id = azurerm_key_vault.backstage.id
   name = "client-secret"
-  value = azuread_service_principal_password.backstage_login_sp_password.value
+  value = azuread_application.backstage_login.application_id
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
