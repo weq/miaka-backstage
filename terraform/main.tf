@@ -220,7 +220,7 @@ resource "azurerm_app_service_certificate_binding" "backstage" {
 }
 
 resource "azurerm_storage_account" "techdocs_storage" {
-  name = "strbackstage${var.environment}${random_id.backstage.dec}"
+  name = "strbackstage${random_id.backstage.dec}"
   resource_group_name = azurerm_resource_group.backstage.name
   location = azurerm_resource_group.backstage.location
   account_tier = "Standard"
