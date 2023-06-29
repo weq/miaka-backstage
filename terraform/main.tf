@@ -223,7 +223,6 @@ resource "azurerm_storage_account" "techdocs_storage" {
   name = "strbackstage${var.environment}${random_id.backstage.dec}"
   resource_group_name = azurerm_resource_group.backstage.name
   location = azurerm_resource_group.backstage.location
-  allow_bloc_public_access = false
   account_tier = "Standard"
   account_replication_type = "GRS"
 }
