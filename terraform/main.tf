@@ -173,7 +173,7 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
 }
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
-  for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_address_list)))
+  for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_addresses)))
   name = "backstage_appservice_${replace(each.value, ".","-")}"
   server_id = azurerm_postgresql_flexible_server.backstage.id
   start_ip_address = each.value
