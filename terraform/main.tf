@@ -16,8 +16,10 @@ resource "azuread_application_password" "backstage_app_password" {
   end_date_relative = "87600h"
 }
 
-resource "random_pet" "backstage" {
-  
+resource "random_pet" "backstage" {}
+
+resource "random_id" "backstage" {
+  byte_length = 4
 }
  
 resource "random_password" "psql_password" {
@@ -170,6 +172,14 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   storage_mb = 32768
 }
 
+resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
+  for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_address_list)))
+  name = "backstage_appservice_${replace(each.value, ".","-")}"
+  server_id = azurerm_postgresql_flexible_server.backstage.id
+  start_ip_address = each.value
+  end_ip_address = each.value
+}
+
 resource "azurerm_dns_cname_record" "backstage" {
   name                = var.backstage_sub_domain
   zone_name           = data.azurerm_dns_zone.tld.name
@@ -209,23 +219,23 @@ resource "azurerm_app_service_certificate_binding" "backstage" {
   ssl_state           = "SniEnabled"
 }
 
-# resource "azurerm_container_app_environment" "backstage" {
-#   name = "cae-backstage"
-#   location = azurerm_resource_group.backstage.location
-#   resource_group_name = azurerm_resource_group.backstage.name
-# }
-# 
-# resource "azurerm_container_app" "backstage" {
-#   name = "ca-REPLACEME"
-#   container_app_environment_id = azurerm_container_app_environment.REPLACEME.id
-#   resource_group_name = azurerm_resource_group.REPLACEME.name
-#   revision_mode = "single"
-#   template {
-#     container {
-#       name = "REPLACEME"
-#       image = "srtprodacr.azurecr.io/REPLACEME:latest"
-#       cpu = 0.25
-#       memory = "0.5Gi"
-#     }
-#   }
-# }
+resource "azurerm_storage_account" "techdocs_storage" {
+  name = "strbackstage${var.environment}${random_id.backstage.dec}"
+  resource_group_name = azurerm_resource_group.backstage.name
+  location = azurerm_resource_group.backstage.location
+  allow_bloc_public_access = false
+  account_tier = "Standard"
+  account_replication_type = "GRS"
+}
+
+resource "azurerm_storage_container" "techdocs_storage_container" {
+  name = "techdocs${random_id.backstage.dec}"
+  storage_account_name = azurerm_storage_account.techdocs_storage.name
+  container_access_type = "private" 
+}
+
+resource "azurerm_role_assignment" "service_principal_storage_access" {
+  scope = azurerm_storage_account.techdocs_storage.id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id = azuread_service_principal.service_principal.object_id
+}
