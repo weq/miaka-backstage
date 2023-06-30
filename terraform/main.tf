@@ -157,7 +157,7 @@ resource "azurerm_linux_web_app" "backstage" {
     "GITHUB_BACKSTAGE_CLIENTID" =  var.github_backstage_clientid
     "GITHUB_BACKSTAGE_CLIENTSECRET" = var.github_backstage_clientsecret
     "GITHUB_BACKSTAGE_WEBHOOKSECRET" = var.github_backstage_webhooksecret
-    "GITHUB_BACKSTAGE_PRIVATEKEY" = var.github_backstage_privateKey
+    "GITHUB_BACKSTAGE_PRIVATEKEY" = var.github_backstage_privatekey
   }
   identity {
     type = "SystemAssigned"
