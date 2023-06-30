@@ -114,6 +114,13 @@ resource "azurerm_key_vault_secret" "auth_github_client_secret" {
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
+resource "azurerm_application_insights" "app_insights" {
+  name                = "appi-backstage-${var.environment}"
+  location            = azurerm_resource_group.backstage.location
+  resource_group_name = azurerm_resource_group.backstage.name
+  application_type    = "other"
+}
+
 resource "azurerm_service_plan" "backstage" {
   name                = "asp-backstage-${var.environment}"
   resource_group_name = azurerm_resource_group.backstage.name
@@ -136,6 +143,7 @@ resource "azurerm_linux_web_app" "backstage" {
     }
   }
   app_settings = {
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.app_insights.instrumentation_key
     POSTGRES_HOST = azurerm_postgresql_flexible_server.backstage.fqdn
     POSTGRES_PORT = 5432
     POSTGRES_USER = azurerm_key_vault_secret.psql_username.value
