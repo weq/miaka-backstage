@@ -141,11 +141,6 @@ variable "github_backstage_clientsecret" {
   type = string
 }
 
-variable "github_backstage_privatekey" {
-  description = "Github Integration Private Key"
-  type = string  
-}
-
 variable "github_backstage_webhookurl" {
   description = "Github Integration Webhook URL"
   type = string
