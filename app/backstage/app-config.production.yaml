@@ -62,3 +62,15 @@ auth:
 #      containerName: ${TECHDOCS_CONTAINER_NAME}
 #      credentials:
 #        accountName: ${TECHDOCS_STORAGE_ACCOUNT}
+
+integrations:
+  github:
+    - host: github.com
+      apps:
+        - appId: ${GITHUB_BACKSTAGE_APPID}
+          webhookUrl: ${GITHUB_BACKSTAGE_WEBHOOKURL}
+          clientId: ${GITHUB_BACKSTAGE_CLIENTID}
+          clientSecret: ${GITHUB_BACKSTAGE_CLIENTSECRET}
+          webhookSecret: ${GITHUB_BACKSTAGE_WEBHOOKSECRET}
+          privateKey: |
+            ${GITHUB_BACKSTAGE_PRIVATEKEY}
