@@ -125,3 +125,36 @@ variable "auth_github_client_secret" {
   description = "Authentication for Github, Client Secret."
   type = string
 }
+
+variable "github_backstage_appid" {
+  description = "Github Integration App ID"
+  type = string  
+}
+
+variable "github_backstage_clientid" {
+  description = "Github Integration ClientID"
+  type = string  
+}
+
+variable "github_backstage_clientsecret" {
+  description = "Github Integration Client Secret"
+  type = string
+}
+
+variable "github_backstage_privatekey" {
+  description = "Github Integration Private Key"
+  type = string  
+}
+
+variable "github_backstage_webhookurl" {
+  description = "Github Integration Webhook URL"
+  type = string
+}
+
+variable "github_backstage_webhooksecret" {
+  description = "Github Integration Webhook Secret"
+  type = string
+}
+
+
+
