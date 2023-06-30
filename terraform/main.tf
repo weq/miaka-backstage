@@ -153,10 +153,10 @@ resource "azurerm_linux_web_app" "backstage" {
     "TECHDOCS_CONTAINER_NAME" = azurerm_storage_container.techdocs_storage_container.name
     "TECHDOCS_STORAGE_ACCOUNT" = azurerm_storage_account.techdocs_storage.name
     "GITHUB_BACKSTAGE_APPID" = var.github_backstage_appid
-    "GITHUB_BACKSTAGE_WEBHOOKURL" = var.github_backstage_webhookUrl
-    "GITHUB_BACKSTAGE_CLIENTID" = var.github_backstage_clientId
-    "GITHUB_BACKSTAGE_CLIENTSECRET" = var.github_backstage_clientSecret
-    "GITHUB_BACKSTAGE_WEBHOOKSECRET" = var.github_backstage_webhookSecret
+    "GITHUB_BACKSTAGE_WEBHOOKURL" = var.github_backstage_webhookurl
+    "GITHUB_BACKSTAGE_CLIENTID" =  var.github_backstage_clientid
+    "GITHUB_BACKSTAGE_CLIENTSECRET" = var.github_backstage_clientsecret
+    "GITHUB_BACKSTAGE_WEBHOOKSECRET" = var.github_backstage_webhooksecret
     "GITHUB_BACKSTAGE_PRIVATEKEY" = var.github_backstage_privateKey
   }
   identity {

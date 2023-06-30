@@ -156,5 +156,10 @@ variable "github_backstage_webhooksecret" {
   type = string
 }
 
+variable "github_backstage_privatekey" {
+  description = "Github Integration Private Key"
+  type = string  
+}
+
 
 
