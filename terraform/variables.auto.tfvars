@@ -1,10 +1,11 @@
 location = "eastus2"
 tags = {
     ProvisionedBy = "Terraform"
-    Environment = "POC"
+    Environment = "production"
     Pipeline = "Github Actions"
     Customer = "Miaka"
 }
+environment = "prod"
 backstage_image = "index.docker.io/weqew/backstage-poc"
 backstage_image_tag = "latest"
 backstage_cpu_cores = "0.5"
