@@ -21,6 +21,10 @@ resource "random_pet" "backstage" {}
 resource "random_id" "backstage" {
   byte_length = 4
 }
+
+locals {
+  short_random_id_dec = substr(random_id.backstage.dec,0,4)
+}
  
 resource "random_password" "psql_password" {
   length           = 16
@@ -33,10 +37,6 @@ resource "azurerm_resource_group" "backstage" {
   location = var.location
 }
 
-
-locals {
-  short_random_id_dec = substr(random_id.backstage.dec,0,4)
-}
 resource "azurerm_key_vault" "backstage" {
   name                = "kv-backstage-${lower(var.environment)}-${local.short_random_id_dec}" # Keyvault has name max length of 24 chars
   location            = azurerm_resource_group.backstage.location
@@ -67,7 +67,6 @@ resource "azurerm_key_vault_access_policy" "backstage" {
     "List"
   ]
 }
-
 
 resource "azurerm_key_vault_secret" "psql_username" {
   key_vault_id = azurerm_key_vault.backstage.id
@@ -192,13 +191,14 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   storage_mb = 32768
 }
 
-# resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
-#   for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_addresses)))
-#   name = "backstage_appservice_${replace(each.value, ".","-")}"
-#   server_id = azurerm_postgresql_flexible_server.backstage.id
-#   start_ip_address = each.value
-#   end_ip_address = each.value
-# }
+resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
+  for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_addresses)))
+  name = "backstage_appservice_${replace(each.value, ".","-")}"
+  server_id = azurerm_postgresql_flexible_server.backstage.id
+  start_ip_address = each.value
+  end_ip_address = each.value
+  depends_on = [ azurerm_linux_web_app.backstage ]
+}
 
 resource "azurerm_dns_cname_record" "backstage" {
   name                = var.backstage_sub_domain
