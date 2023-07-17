@@ -138,9 +138,8 @@ resource "azurerm_linux_web_app" "backstage" {
   #restart_policy      = var.restart_policy
   site_config {
     application_stack {
-      docker_image_name = var.backstage_image
+      docker_image_name = "${var.backstage_image}:${var.backstage_image_tag}"
       docker_registry_url = "https://index.docker.io"
-      docker_image_tag = var.backstage_image_tag
     }
   }
   app_settings = {
