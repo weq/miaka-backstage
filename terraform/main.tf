@@ -34,7 +34,7 @@ resource "azurerm_resource_group" "backstage" {
 }
 
 resource "azurerm_key_vault" "backstage" {
-  name                = "kv-backstage-${lower(var.environment)}" # Keyvault has name max length of 24 chars
+  name                = "kv-backstage-${random_id.backstage.dec}-${lower(var.environment)}" # Keyvault has name max length of 24 chars
   location            = azurerm_resource_group.backstage.location
   resource_group_name = azurerm_resource_group.backstage.name
   sku_name            = "standard"
