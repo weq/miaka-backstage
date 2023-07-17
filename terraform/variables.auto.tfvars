@@ -6,7 +6,7 @@ tags = {
     Customer = "Miaka"
 }
 environment = "prod"
-backstage_image = "index.docker.io/weqew/backstage-poc"
+backstage_image = "weqew/backstage-poc"
 backstage_image_tag = "latest"
 backstage_cpu_cores = "0.5"
 backstage_memory_in_gb = "1.5"
