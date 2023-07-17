@@ -178,7 +178,7 @@ resource "azurerm_linux_web_app" "backstage" {
 }
 
 resource "azurerm_postgresql_flexible_server" "backstage" {
-  name = "psql-backstage"
+  name = "psql-backstage-${var.environment}-${random_pet.backstage.id}"
   resource_group_name = azurerm_resource_group.backstage.name
   location = azurerm_resource_group.backstage.location
   version = "14"
