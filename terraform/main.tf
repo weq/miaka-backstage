@@ -38,7 +38,7 @@ locals {
   short_random_id_dec = substr(random_id.backstage.dec,0,4)
 }
 resource "azurerm_key_vault" "backstage" {
-  name                = "kv-backstage-${local.short_random_id_dec}-${lower(var.environment)}" # Keyvault has name max length of 24 chars
+  name                = "kv-backstage-${lower(var.environment)}-${local.short_random_id_dec}" # Keyvault has name max length of 24 chars
   location            = azurerm_resource_group.backstage.location
   resource_group_name = azurerm_resource_group.backstage.name
   sku_name            = "standard"
