@@ -22,7 +22,7 @@ terraform {
     resource_group_name  = "terraform-state"
     storage_account_name = "miakatfstate"
     container_name       = "state"
-    key = "poc.backstage.tfstate"
+    key = "prod.backstage.tfstate"
     # subscription_id      = ""
   }
 }
