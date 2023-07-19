@@ -116,15 +116,15 @@ variable "github_token" {
   type = string
 }
 
-variable "auth_github_client_id" {
-  description = "Authentication for Github, Client Id."
-  type = string
-}
-
-variable "auth_github_client_secret" {
-  description = "Authentication for Github, Client Secret."
-  type = string
-}
+# variable "auth_github_client_id" {
+#   description = "Authentication for Github, Client Id."
+#   type = string
+# }
+# 
+# variable "auth_github_client_secret" {
+#   description = "Authentication for Github, Client Secret."
+#   type = string
+# }
 
 variable "github_backstage_appid" {
   description = "Github Integration App ID"
