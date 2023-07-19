@@ -111,11 +111,11 @@ variable "dns_rec_ttl" {
   default = 300
 }
 
-variable "github_token" {
-  description = "PAT Token for GitHub connection."
-  type = string
-}
-
+# variable "github_token" {
+#   description = "PAT Token for GitHub connection."
+#   type = string
+# }
+# 
 # variable "auth_github_client_id" {
 #   description = "Authentication for Github, Client Id."
 #   type = string
