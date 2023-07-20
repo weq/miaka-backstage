@@ -66,6 +66,7 @@ auth:
 integrations:
   github:
     - host: github.com
+      token: ${GITHUB_TOKEN}
       apps:
         - appId: ${GITHUB_BACKSTAGE_APPID}
           webhookUrl: ${GITHUB_BACKSTAGE_WEBHOOKURL}

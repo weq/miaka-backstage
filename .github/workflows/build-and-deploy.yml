@@ -90,6 +90,7 @@ jobs:
             -var="github_backstage_webhookurl=${{ secrets.GH_BACKSTAGE_WEBHOOKURL }}" \
             -var="github_backstage_webhooksecret=${{ secrets.GH_BACKSTAGE_WEBHOOKSECRET }}" \
             -var="github_backstage_privatekey=${{ secrets.GH_BACKSTAGE_PRIVATEKEY }}" \
+            -var="github_token=${{ secrets.GH_TOKEN }}" \
         working-directory: ./terraform
       - name: Terraform Apply
         run: |

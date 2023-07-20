@@ -96,13 +96,13 @@ resource "azurerm_key_vault_secret" "client_secret" {
   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
 }
 
-# resource "azurerm_key_vault_secret" "github_token" {
-#   key_vault_id = azurerm_key_vault.backstage.id
-#   name = "github-token"
-#   value = var.github_token
-#   depends_on = [ azurerm_key_vault_access_policy.pipeline ]
-# }
-# 
+resource "azurerm_key_vault_secret" "github_token" {
+  key_vault_id = azurerm_key_vault.backstage.id
+  name = "github-token"
+  value = var.github_token
+  depends_on = [ azurerm_key_vault_access_policy.pipeline ]
+}
+
 # resource "azurerm_key_vault_secret" "auth_github_client_id" {
 #   key_vault_id = azurerm_key_vault.backstage.id
 #   name = "auth-github-client-id"
@@ -158,7 +158,7 @@ resource "azurerm_linux_web_app" "backstage" {
     #AUTH_MICROSOFT_CLIENT_SECRET = azuread_application_password.backstage_app_password.value
     PGSSLMODE = "verify-full"
     WEBSITES_PORT = 7007
-    #GITHUB_TOKEN = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.github_token.name})"
+    GITHUB_TOKEN = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.github_token.name})"
     #AUTH_GITHUB_CLIENT_ID = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.auth_github_client_id.name})"
     #AUTH_GITHUB_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.backstage.name};SecretName=${azurerm_key_vault_secret.auth_github_client_secret.name})"
     "TECHDOCS_CONTAINER_NAME" = azurerm_storage_container.techdocs_storage_container.name
