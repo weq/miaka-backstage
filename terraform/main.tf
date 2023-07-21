@@ -191,16 +191,16 @@ resource "azurerm_postgresql_flexible_server" "backstage" {
   storage_mb = 32768
 }
 
-resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
-  for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_addresses)))
-  name = "backstage_appservice_${replace(each.value, ".","-")}"
-  server_id = azurerm_postgresql_flexible_server.backstage.id
-  start_ip_address = each.value
-  end_ip_address = each.value
-  depends_on = [ azurerm_linux_web_app.backstage ]
-}
+# resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
+#   for_each = toset(distinct(split(",", azurerm_linux_web_app.backstage.outbound_ip_addresses)))
+#   name = "backstage_appservice_${replace(each.value, ".","-")}"
+#   server_id = azurerm_postgresql_flexible_server.backstage.id
+#   start_ip_address = each.value
+#   end_ip_address = each.value
+#   depends_on = [ azurerm_linux_web_app.backstage ]
+# }
 
-resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
+resource "azurerm_postgresql_flexible_server_firewall_rule" "azure" {
   name = "azure_services"
   server_id = azurerm_postgresql_flexible_server.backstage.id
   start_ip_address = "0.0.0.0"
