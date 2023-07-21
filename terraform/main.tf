@@ -200,6 +200,14 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
   depends_on = [ azurerm_linux_web_app.backstage ]
 }
 
+resource "azurerm_postgresql_flexible_server_firewall_rule" "backstage" {
+  name = "azure_services"
+  server_id = azurerm_postgresql_flexible_server.backstage.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address = "0.0.0.0"
+  depends_on = [ azurerm_linux_web_app.backstage ]
+}
+
 resource "azurerm_dns_cname_record" "backstage" {
   name                = var.backstage_sub_domain
   zone_name           = data.azurerm_dns_zone.tld.name
