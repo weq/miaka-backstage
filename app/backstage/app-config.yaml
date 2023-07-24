@@ -89,11 +89,12 @@ scaffolder:
 catalog:
   providers:
     github:
-      organization: 'Miaka'
-      catalogPath: '/catalog-info.yaml'
-      filters:
-        branch: 'main'
-        repository: '.*'
+      miaka:
+        organization: 'MiakaLabs'
+        catalogPath: '/catalog-info.yaml'
+        filters:
+          branch: 'main'
+          repository: '.*'
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
