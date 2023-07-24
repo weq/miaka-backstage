@@ -87,6 +87,13 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
+  providers:
+    github:
+      organization: 'Miaka'
+      catalogPath: '/catalog-info.yaml'
+      filters:
+        branch: 'main'
+        repository: '.*'
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
