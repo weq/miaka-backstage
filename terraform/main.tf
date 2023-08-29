@@ -184,7 +184,8 @@ resource "azurerm_linux_web_app" "backstage" {
       tenant_auth_endpoint = "https://login.microsoftonline.com/v2.0/${var.tenant_id}/"
       client_secret_setting_name = "AUTH_MICROSOFT_CLIENT_SECRET"
     }
-    
+    login {
+    }
   }
   tags = var.tags
 }
