@@ -173,20 +173,20 @@ resource "azurerm_linux_web_app" "backstage" {
   identity {
     type = "SystemAssigned"
   }
-  auth_settings_v2 {
-    auth_enabled = true
-    require_authentication = true
-    unauthenticated_action = "RedirectToLoginPage"
-    default_provider = "azureactivedirectory"
-    require_https = true
-    active_directory_v2 {
-      client_id = azuread_application.backstage_login.application_id
-      tenant_auth_endpoint = "https://login.microsoftonline.com/v2.0/${var.tenant_id}/"
-      client_secret_setting_name = "AUTH_MICROSOFT_CLIENT_SECRET"
-    }
-    login {
-    }
-  }
+  # auth_settings_v2 {
+  #   auth_enabled = true
+  #   require_authentication = true
+  #   unauthenticated_action = "RedirectToLoginPage"
+  #   default_provider = "azureactivedirectory"
+  #   require_https = true
+  #   active_directory_v2 {
+  #     client_id = azuread_application.backstage_login.application_id
+  #     tenant_auth_endpoint = "https://login.microsoftonline.com/v2.0/${var.tenant_id}/"
+  #     client_secret_setting_name = "AUTH_MICROSOFT_CLIENT_SECRET"
+  #   }
+  #   login {
+  #   }
+  # }
   tags = var.tags
 }
 
