@@ -20,7 +20,7 @@ resource "azuread_application" "backstage_login" {
     }
   }
   sign_in_audience = "AzureADMyOrg"
-  tags = var.tags
+  # tags = var.tags
 }
 
 resource "azuread_service_principal" "service_principal" {
