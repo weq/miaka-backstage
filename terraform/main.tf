@@ -1,10 +1,26 @@
 resource "azuread_application" "backstage_login" {
-  display_name = "Backstage Login - ${var.environment}"
+  display_name = "Backstage"
+  description = "Backstage Login - ${var.environment}"
   web {
+    homepage_url = "https://${var.backstage_sub_domain}.${var.domain}"
     redirect_uris = [
-      "https://${var.backstage_sub_domain}.${var.domain}/api/auth/microsoft/handler/frame"
+      "https://${var.backstage_sub_domain}.${var.domain}/api/auth/microsoft/handler/frame",
+      "https://${var.backstage_sub_domain}.${var.domain}/.auth/login/aad/callback"
     ]
+    implicit_grant {
+      id_token_issuance_enabled = true
+    }
   }
+  required_resource_access {
+    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+
+    resource_access {
+      id   = "df021288-bdef-4463-88db-98f22de89214" # User.Read.All
+      type = "Role"
+    }
+  }
+  sign_in_audience = "AzureADMyOrg"
+  tags = var.tags
 }
 
 resource "azuread_service_principal" "service_principal" {
