@@ -1,6 +1,6 @@
 site_name: 'Miaka-Backstage'
 site_description: 'Main documentation for Miaka Backstage features and platform APIs'
-repo_url: https://github.com/backstage/backstage
+repo_url: https://github.com/weq/miaka-backstage
 edit_uri: edit/master/docs
 
 plugins:
