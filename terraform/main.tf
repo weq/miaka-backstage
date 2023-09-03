@@ -286,7 +286,7 @@ resource "azurerm_storage_account" "techdocs_storage" {
 }
 
 resource "azurerm_storage_container" "techdocs_storage_container" {
-  name = "techdocs${random_id.backstage.dec}"
+  name = "techdocs"
   storage_account_name = azurerm_storage_account.techdocs_storage.name
   container_access_type = "private" 
 }
