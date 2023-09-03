@@ -95,10 +95,10 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve -input=false backstage.tfplan
-        working-directory: ./terraform
-        
+        working-directory: ./terraform       
   publish-techdocs-site:
     runs-on: ubuntu-latest
+    needs: deploy
     env:
       TECHDOCS_CONTAINER_NAME: ${{ secrets.TECHDOCS_CONTAINER_NAME }}
       TECHDOCS_STORAGE_ACCOUNT: ${{ secrets.TECHDOCS_STORAGE_ACCOUNT }}
