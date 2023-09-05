@@ -54,14 +54,14 @@ auth:
         clientId: ${GITHUB_BACKSTAGE_CLIENTID}
         clientSecret: ${GITHUB_BACKSTAGE_CLIENTSECRET}
 
-#techdocs:
-#  builder: 'external'
-#  publisher:
-#    type: 'azureBlobStorage'
-#    azureBlobStorage:
-#      containerName: ${TECHDOCS_CONTAINER_NAME}
-#      credentials:
-#        accountName: ${TECHDOCS_STORAGE_ACCOUNT}
+techdocs:
+  builder: 'external'
+  publisher:
+    type: 'azureBlobStorage'
+    azureBlobStorage:
+      containerName: ${TECHDOCS_CONTAINER_NAME}
+      credentials:
+        accountName: ${TECHDOCS_STORAGE_ACCOUNT}
 
 integrations:
   github:
