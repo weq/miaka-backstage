@@ -17,6 +17,10 @@ terraform {
       source  = "hashicorp/random"
       version = ">= 1.0.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = ">= 5.0"
+    }
   }
   backend "azurerm" {
     resource_group_name  = "terraform-state"

@@ -296,3 +296,15 @@ resource "azurerm_role_assignment" "service_principal_storage_access" {
   role_definition_name = "Storage Blob Data Owner"
   principal_id = azuread_service_principal.service_principal.object_id
 }
+
+resource "github_actions_organization_secret" "github_techdocs_container_name" {
+  visibility       = "private"
+  secret_name      = "TECHDOCS_CONTAINER_NAME"
+  plaintext_value  = azurerm_storage_container.techdocs_storage_container.name
+}
+
+resource "github_actions_organization_secret" "github_techdocs_storage_account_name" {
+  visibility       = "private"
+  secret_name      = "TECHDOCS_STORAGE_ACCOUNT"
+  plaintext_value  = azurerm_storage_account.techdocs_storage.name
+}
